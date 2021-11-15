@@ -12,5 +12,5 @@ www.img.cu3t0m.repl.co
 
 ## Installation
 
-*    mkvirtualenv flaskgur
 *    pip install . 
+*    python3 main.py
