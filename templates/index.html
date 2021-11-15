@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Img | Upload your best images</title>
+    <base href="https://img.cu3t0m.repl.co">
+    <!--Metadata-->
+    <meta name="keywords" content="Img"> <!--search "Img" on Google-->
+    <meta name="description" content="Image Uploader made with Flask.">    
+    <style>
+        *{
+  font-family:'Open Sans', sans-serif;
+}
+#form{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  border-radius:15px;
+  padding:20px;
+  box-shadow:0 0 5px 0 rgba(0,0,0,0.25);
+  width:50%;
+  min-width:200px;
+  max-width:800px;
+  color:rgb(100,100,100);
+  text-align:center;
+}
+#file-wrap{
+  border:dashed rgb(200,200,200) 1px;
+  border-radius:15px;
+  padding:50px 20px;
+}
+#cf, [type='submit']{
+  margin:auto;
+  background:rgb(0,125,255);
+  color:white;
+  border-radius:10px;
+  text-align:center;
+  display:block;
+  padding:10px;
+  max-width:100px;
+  border:none;
+}
+#or{
+  margin:10px 0;
+}
+#loader{
+  padding:20px;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  border-radius:15px;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.25);
+  width:50%;
+  min-width:200px;
+  max-width:800px;
+  display:none;
+}
+#load-bar{
+  height:5px;
+  border-radius:10px;
+  background:rgb(200,200,200);
+  overflow:hidden;
+}
+#prog{
+  background:rgb(0,125,255);
+  width:0px;
+  border-radius:10px;
+  height:5px;
+  animation:ease-in-out load 2s infinite;
+  position:absolute;
+}
+@keyframes load{
+  0%{
+    left:20px;
+    width:0px;
+  }
+  25%{
+    width:calc(100% - 40px);
+    left:20px;
+  }
+  50%{
+    left:calc(100% - 20px);
+    width:0px;
+  }
+  100%{
+    left: 20px;
+    width:0px;
+  }
+}
+    </style>
+	</head>
+	<body>
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/5434134134.js" crossorigin="anonymous"></script>
+<form method="POST" action="/upload" enctype="multipart/form-data" id="form">
+  <input type="file" name="pic" id="pic" accept="image/*" style="display:none;" multiple>
+  <label for="pic">
+    <div id="file-wrap">
+      <i class="fas fa-file-image" style="font-size:50px;color:rgb(200,200,200);"></i><br>
+      drag and drop file
+    </div>
+  </label>
+  <div id="or">or</div>
+  <label for="pic" id="cf">
+   Choose File
+  </label>
+  <br>
+  <!--<input type="submit" value="Upload">-->
+</form>
+<div id="loader">
+  <h2>Uploading...</h2>
+  <div id="load-bar">
+    <div id="prog"></div>
+  </div>
+</div>
+	</body>
+  <script>
+    const $ = (prop) => document.querySelector(prop);
+let dropContainer = $("#file-wrap");
+dropContainer.ondragover = dropContainer.ondragenter = function(evt) {
+  evt.preventDefault();
+};
+
+dropContainer.ondrop = function(evt) {
+  let fileInput = $("#pic")
+  // pretty simple -- but not for IE :(
+  fileInput.files = evt.dataTransfer.files;
+
+  // If you want to use some of the dropped files
+  const dT = new DataTransfer();
+  dT.dropEffect = true;
+  dT.effectAllowed = true;
+  dT.items.add(evt.dataTransfer.files[0]);
+  console.log(dT)
+  fileInput.files = dT.files;
+
+  evt.preventDefault();
+  $("form").submit();
+  $("form").style.display = "none";
+  $("#loader").style.display = "block";
+};
+$("#pic").onchange = function(){
+  $("form").submit();
+  $("form").style.display = "none";
+  $("#loader").style.display = "block";
+}
+  </script>
+</html>
